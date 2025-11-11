@@ -43,6 +43,13 @@ const {data, error} = await Astro.callAction(actions.getVariables, {})
             });
             const result = await res.json();
             console.log('Respuesta:', result);
+
+            // Mostrar popup de confirmación
+            if (res.ok) {
+              alert('¡Cambios guardados exitosamente!');
+            } else {
+              alert('Hubo un error al guardar los cambios.');
+            }
           });
         });
       });

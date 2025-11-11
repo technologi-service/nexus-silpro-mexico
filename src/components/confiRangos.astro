@@ -65,7 +65,7 @@ if (Array.isArray(data)) {
         document.querySelectorAll('.grupo-form').forEach(form => {
           form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const rangos: { id: number, min_valor: number | null, max_valor: number | null, puntuacion: number | null }[] = [];
+            const rangos = [];
             const grupoDivs = form.querySelectorAll('[data-rango]');
             grupoDivs.forEach((div, idx) => {
               const idInput = div.querySelector('input[name="id"]');
@@ -87,6 +87,13 @@ if (Array.isArray(data)) {
             });
             const result = await res.json();
             console.log('Respuesta:', result);
+
+            // Mostrar popup de confirmación
+            if (res.ok) {
+              alert('¡Cambios guardados exitosamente!');
+            } else {
+              alert('Hubo un error al guardar los cambios.');
+            }
           });
         });
       });

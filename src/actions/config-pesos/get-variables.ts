@@ -5,7 +5,7 @@ export const getVariables = defineAction({
   accept: 'json',
   handler: async ({ request }) => {
    try {
-      const variables = await prisma.variables_pesos.findMany()
+      const variables = await prisma.variable.findMany()
       return variables
    } catch (error) {
      console.error("Error fetching variable weights:", error);

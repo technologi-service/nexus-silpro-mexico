@@ -23,7 +23,7 @@ import { navigate } from "astro:transitions/client";
     if (btn) {
       btn.addEventListener('click', async () => {
         try {
-          const res = await fetch('https://kukulcanai.app.n8n.cloud/webhook/d0d91297-56a9-4669-8eb7-7278d9642cb3', {
+          const res = await fetch('https://kukulcanai.app.n8n.cloud/webhook/recalcular-score', {
             method: 'GET'
           });
           if (res.ok) {
