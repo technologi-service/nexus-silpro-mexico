@@ -4,29 +4,27 @@ import prisma from '../../../db/prisma';
 export const GET: APIRoute = async () => {
   try {
     // Consulta los datos desde el modelo vcs_clientes
-    const clientes = await prisma.vcs_clientes.findMany({
+    const clientes = await prisma.vcs.findMany({
       select: {
         id_cliente: true,
-        segmento: true,
-        calculado_en: true,
+        segmento_actual: true,
+
       },
-      orderBy: {
-        calculado_en: 'desc', // Ordenar por la fecha más reciente
-      },
+
     });
 
     // Filtrar para obtener solo el último segmento de cada cliente
     const latestSegments = clientes.reduce((acc: Record<string, string>, cliente) => {
       if (!acc[cliente.id_cliente]) {
-        acc[cliente.id_cliente] = cliente.segmento || 'Sin segmento';
+        acc[cliente.id_cliente] = cliente.segmento_actual || 'Sin segmento';
       }
       return acc;
     }, {});
 
     // Contar la cantidad de clientes por segmento
     const segmentCounts = Object.values(latestSegments).reduce(
-      (acc: Record<string, number>, segmento) => {
-        acc[segmento] = (acc[segmento] || 0) + 1;
+      (acc: Record<string, number>, segmento_actual) => {
+        acc[segmento_actual] = (acc[segmento_actual] || 0) + 1;
         return acc;
       },
       {}
