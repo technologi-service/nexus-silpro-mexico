@@ -14,7 +14,8 @@ model carga_de_datos_muelles {
   id_producto     String?   @db.VarChar(50)
   nombre_producto String?
   fecha           DateTime? @db.Date
-  volumen         Decimal?  @db.Decimal(10, 2)
+  volumen         Decimal?  @db.Decimal(15, 2)
+  sede            String?
 
   @@ignore
 }
@@ -23,8 +24,8 @@ model catalogo_segmentos_vcs {
   id        Int     @id @default(autoincrement())
   segmento  String  @unique(map: "catalogo_segmentos_vcs_segmento_numerico_key")
   estrellas String
-  score_min Decimal @db.Decimal(3, 1)
-  score_max Decimal @db.Decimal(3, 1)
+  score_min Decimal @db.Decimal(10, 2)
+  score_max Decimal @db.Decimal(10, 2)
 }
 
 model datos_para_etiquetar_clientes {
