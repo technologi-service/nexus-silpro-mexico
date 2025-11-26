@@ -5,7 +5,7 @@ export const getSegmentosVcs = defineAction({
   accept: 'json',
   handler: async ({ request }) => {
     try {
-      const segmentos = await prisma.catalogo_segmentos_vcs.findMany();
+      const segmentos = await prisma.segmentos_vcs.findMany();
       return segmentos;
     } catch (error) {
       console.error('Error fetching segmentos:', error);

@@ -1,0 +1,104 @@
+---
+import '../../styles/global.css';
+import { actions } from "astro:actions";
+
+// 1. OBTENER DATOS DEL SERVIDOR
+const { data: periodoRaw } = await Astro.callAction(actions.getPeriodo, {});
+
+// 2. PREPARAR DATOS PARA EL MAP
+// Si hay datos en la BD, los usamos.
+// Si no hay datos (array vacío o null), creamos un "mock" con ID 0 para que el input se muestre igual con valor 1.
+const datosParaMostrar = (periodoRaw && Array.isArray(periodoRaw) && periodoRaw.length > 0)
+    ? periodoRaw
+    : [{ id: 0, periodo: 1 }];
+---
+
+{/* Iteramos sobre los datos (incluso si es solo 1 registro) */}
+{datosParaMostrar.map((p) => (
+  <div class="flex justify-center items-center mb-4 period-selector-container">
+
+    <label for={`periodo-${p.id}`} class="text-base font-semibold text-gray-700 mr-3">
+        Periodo (meses):
+    </label>
+
+    {/* Loader específico para este ID */}
+    <div id={`loader-${p.id}`} class="hidden mr-2">
+        <svg class="animate-spin h-4 w-4 text-[#0f4c65]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    </div>
+
+    <input
+        id={`periodo-${p.id}`}
+        data-id={p.id}
+        name="periodo-input"
+        type="number"
+        min="1"
+        max="12"
+        value={p.periodo ?? 1}
+        class="py-1.5 px-3 border border-gray-300 rounded shadow-sm bg-white text-gray-700 text-sm focus:border-[#0f4c65] focus:ring-[#0f4c65] outline-none transition-all w-24 text-center font-semibold"
+        aria-label="Periodo en meses"
+    />
+  </div>
+))}
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        // Seleccionamos todos los inputs generados por el map
+        const inputs = document.querySelectorAll('input[name="periodo-input"]');
+
+        inputs.forEach((element) => {
+            const input = element as HTMLInputElement;
+
+            input.addEventListener('change', async () => {
+                // 1. Obtener ID y Valor
+                // Si el ID es 0 (fallback), asumimos que en el backend se manejará como creación o update del ID 1
+                const rawId = input.getAttribute('data-id');
+                const id = Number(rawId);
+
+                let newValue = Number(input.value);
+
+                // 2. Validación Cliente (1-12)
+                if (isNaN(newValue) || newValue < 1) newValue = 1;
+                if (newValue > 12) newValue = 12;
+                input.value = String(newValue); // Corregir visualmente si se pasó
+
+                // 3. Feedback Visual
+                const loader = document.getElementById(`loader-${id}`);
+                if (loader) loader.classList.remove('hidden');
+                input.disabled = true;
+                input.style.opacity = '0.6';
+
+                try {
+                    // 4. Llamada a la API
+                    const res = await fetch('/api/update-periodo', {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        // Enviamos ID y el nuevo Periodo
+                        body: JSON.stringify({ id: id, periodo: newValue })
+                    });
+
+                    if (!res.ok) throw new Error('Error al actualizar');
+
+                    console.log(`✅ Periodo actualizado a: ${newValue} (ID: ${id})`);
+
+                    // 5. Evento Global (Opcional)
+                    document.dispatchEvent(new CustomEvent('period-changed', {
+                        detail: { id: id, period: newValue }
+                    }));
+
+                } catch (error) {
+                    console.error(error);
+                    alert("No se pudo actualizar el periodo.");
+                } finally {
+                    // 6. Restaurar Estado
+                    if (loader) loader.classList.add('hidden');
+                    input.disabled = false;
+                    input.style.opacity = '1';
+                    input.focus();
+                }
+            });
+        });
+    });
+</script>

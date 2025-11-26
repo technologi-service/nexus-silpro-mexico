@@ -25,7 +25,7 @@ export const PATCH: APIRoute = async ({ request }) => {
       try {
         // AJUSTA EL NOMBRE DE LA TABLA AQUÍ SI ES DIFERENTE
         // (ej: prisma.variable.update o prisma.catalogo_variables_vcs.update)
-        const update = await prisma.variable.update({
+        const update = await prisma.pesos_vcs.update({
           where: { id: item.id },
           data: {
             // Actualizamos solo el peso, asegurando que sea número

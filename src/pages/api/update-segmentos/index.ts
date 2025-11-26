@@ -34,7 +34,7 @@ export const PATCH: APIRoute = async ({ request }) => {
       }
 
       try {
-        const updated = await prisma.catalogo_segmentos_vcs.update({
+        const updated = await prisma.segmentos_vcs.update({
           where: { id: r.id },
           data: {
             estrellas: r.estrellas,

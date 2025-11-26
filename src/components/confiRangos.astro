@@ -4,39 +4,12 @@ import ComponentRangos from "./vcs/ComponentRangos.astro";
 import ComponentPesos from "./vcs/ComponentPesos.astro";
 import ComponentSegmentos from "./vcs/ComponentSegmentos.astro";
 import ComponentRecalcular from "./vcs/ComponentRecalcular.astro";
+import ComponentPeriodo from "./vcs/ComponentPeriodo.astro";
 
 
 ---
-<div class="min-h-screen bg-white">
-  <header
-    class="relative overflow-hidden
-           bg-linear-to-r from-maya-dark via-maya-deep to-maya-dark
-           bg-cover bg-no-repeat bg-center"
-    style="background-image: url('/dragones6.png');"
-  >
-    <div
-      class="container mx-auto px-6 py-8
-             grid grid-cols-1 md:grid-cols-2
-             gap-8 items-center min-h-[250px] md:min-h-[300px] lg:min-h-[350px]"
-    >
-      <div class="hidden md:block"></div>
 
-      <div class="text-center md:text-right md:pr-12">
-        <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 leading-tight">
-          Bienvenidos a
-        </h1>
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-3 leading-tight">
-          KAIloop Nexus
-        </h2>
-        <p class="text-xl text-green-500 italic font-bold leading-snug">
-          El centro de gestión
-        </p>
-        <p class="text-xl text-green-500 italic font-bold leading-snug">
-          Inteligente de Kukulcan AI
-        </p>
-      </div>
-    </div>
-  </header>
+
 
   <main class="relative bg-white flex-grow">
     <div class="container mx-auto px-6 py-12">
@@ -46,6 +19,7 @@ import ComponentRecalcular from "./vcs/ComponentRecalcular.astro";
           Funcionalidades Neuronas de Negocio
         </h2>
       </section>
+      <ComponentPeriodo/>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-0 mb-12 border-t border-b border-gray-300 py-8">
         <section
@@ -55,34 +29,12 @@ import ComponentRecalcular from "./vcs/ComponentRecalcular.astro";
 
           <div>
 
-            <div class="flex justify-center items-center mb-4">
-                <label for="period-selector" class="text-base font-semibold text-gray-700 mr-3">
-                    Periodo:
-                </label>
-                <select
-                    id="period-selector"
-                    class="py-1.5 px-3 border border-gray-300 rounded shadow-sm
-                           bg-white text-gray-700 text-sm focus:border-blue-500 focus:ring-blue-500"
-                >
-                    <option value="1m">1 Mes</option>
-                    <option value="2m">2 Meses</option>
-                    <option value="3m">3 Meses</option>
-                    <option value="4m">4 Meses</option>
-                    <option value="5m">5 Meses</option>
-                    <option value="6m">6 Meses</option>
-                    <option value="7m">7 Meses</option>
-                    <option value="8m">8 Meses</option>
-                    <option value="9m">9 Meses</option>
-                    <option value="10m">10 Meses</option>
-                    <option value="11m">11 Meses</option>
-                    <option value="12m">12 Meses</option>
-                </select>
-            </div>
+
             <div class="border-t border-gray-400 mb-2"></div>
 
             <h3
               id="matriz-scoring-title"
-              class="text-base font-semibold text-gray-700 text-center"
+              class="text-2xl md:text-3xl font-bold text-[#0f4c65] text-center tracking-wide mb-4 drop-shadow-sm"
             >
               Matriz de Scoring
             </h3>
@@ -97,6 +49,12 @@ import ComponentRecalcular from "./vcs/ComponentRecalcular.astro";
 
         <div>
     <div class="border-t border-gray-400 mb-2"></div>
+     <h3
+              id="matriz-scoring-title"
+              class="text-2xl md:text-3xl font-bold text-[#0f4c65] text-center tracking-wide mb-4 drop-shadow-sm"
+            >
+              Matriz de Segmentos
+            </h3>
 
 <ComponentSegmentos/>
 <ComponentRecalcular/>
@@ -104,40 +62,4 @@ import ComponentRecalcular from "./vcs/ComponentRecalcular.astro";
 
   </main>
 
-  <footer class="bg-gray-900 text-white py-8 px-4 md:px-8 relative overflow-hidden w-full mt-auto">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between z-10 relative w-full">
-      <div class="w-full md:w-2/3 text-center md:text-left mb-6 md:mb-0 md:pr-8">
-        <p class="text-lg leading-relaxed">
-          La neurona VCS impulsa una nueva era de monetización B2B,
-          transformando datos de comportamiento en decisiones rentables
-          que maximizan ingresos, eficiencia y fidelización.
-        </p>
-      </div>
-      <div class="w-full md:w-1/3 flex flex-col items-center md:items-end">
-        <div class="flex items-center gap-2">
-          <svg width="80" height="40" viewBox="0 0 200 100" fill="#E5E7EB" xmlns="http://www.w3.org/2000/svg"
-               aria-labelledby="logoTitle logoDesc" role="img" class="flex-shrink-0">
-            <title id="logoTitle">Kukulcan AI Consulting Logo</title>
-            <desc id="logoDesc">Logo de Kukulcan AI Consulting, con un dragón y el texto.</desc>
-            <path d="M20 50 C 30 20, 70 20, 80 50 C 70 80, 30 80, 20 50 Z" fill="#E5E7EB"/>
-            <circle cx="25" cy="45" r="3" fill="white"/>
-            <path d="M22 47 Q25 42, 28 47" stroke="black" stroke-width="1" fill="none"/>
-            <text x="90" y="45" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#E5E7EB">Kukulcan AI</text>
-            <text x="90" y="70" font-family="Arial, sans-serif" font-size="16" fill="#E5E7EB">Consulting</text>
-            <line x1="90" y1="75" x2="190" y2="75" stroke="#E5E7EB" stroke-width="1.5"/>
-          </svg>
-          <div>
-            <h3 class="text-xl font-semibold">Kukulcan AI</h3>
-            <p class="text-sm">Consulting</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="absolute inset-0 z-0">
-      <div class="absolute top-1/4 left-1/4 w-12 h-12 bg-gray-700 opacity-20 transform rotate-45"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-10 h-10 bg-gray-700 opacity-20 transform rotate-45"></div>
-      <div class="absolute top-1/3 left-1/2 w-2 h-2 rounded-full bg-gray-600 opacity-30"></div>
-      <div class="absolute bottom-1/3 right-1/3 w-2 h-2 rounded-full bg-gray-600 opacity-30"></div>
-    </div>
-  </footer>
-</div>
+

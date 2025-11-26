@@ -4,10 +4,12 @@ import { getVariables } from "./config-pesos/get-variables";
 import { updateVariable } from "./config-pesos/update-variables";
 
 import { getSegmentosVcs } from "./segmentos/get-segmentos";
+import { getPeriodo } from "./periodo/get-periodo";
 
 export const server = {
   getVariables,
   updateVariable,
   getRangos,
-  getSegmentosVcs
+  getSegmentosVcs,
+  getPeriodo,
 }

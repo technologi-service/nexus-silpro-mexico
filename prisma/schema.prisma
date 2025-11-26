@@ -7,58 +7,66 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model catalogo_segmentos_vcs {
-  id               Int     @id @default(autoincrement())
-  estrellas        Int
-  score_min        Decimal @db.Decimal(3, 1)
-  score_max        Decimal @db.Decimal(3, 1)
-  nombre_categoria String?
+model clientes_vcs {
+  id_base        BigInt   @id @default(autoincrement())
+  id_cliente     String
+  nombre_empresa String?
+  year_          Int
+  mes            Int
+  numero_periodo Int      @db.SmallInt
+  corte          DateTime @db.Date
+  recencia       Int
+  frequencia     Int
+  volumen        Decimal  @db.Decimal(20, 2)
+  media_margen   Decimal? @db.Decimal(10, 4)
+  r_score        Int?
+  f_score        Int?
+  v_score        Int?
+  m_score        Int?
+  score          Decimal? @db.Decimal(6, 2)
+  segmento       String?
+  calculado_en   DateTime @default(now()) @db.Timestamptz(6)
+
+  @@unique([id_cliente, year_, numero_periodo], map: "unique_cliente_periodo")
 }
 
-model variable {
+model data_input_clientes_vcs {
+  id                  BigInt   @id @default(autoincrement())
+  id_cliente          String   @db.VarChar(50)
+  id_venta            String   @db.VarChar(50)
+  nombre_razon_social String?  @db.VarChar(255)
+  fecha_de_compra     DateTime @db.Date
+  volumen             Decimal? @default(0) @db.Decimal(15, 2)
+  margen              Decimal? @default(0) @db.Decimal(15, 2)
+  sede                String?  @db.VarChar(100)
+
+  @@index([id_cliente], map: "idx_cliente_vcs")
+  @@index([fecha_de_compra], map: "idx_fecha_vcs")
+}
+
+model periodo_vcs {
+  id      Int  @id @default(autoincrement())
+  periodo Int?
+}
+
+model pesos_vcs {
   id     Int     @id @default(autoincrement())
   nombre String? @db.VarChar(255)
   peso   Float
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model data_entrada_silpro {
-  id              BigInt?
-  nombre_empresa  String?
-  id_cliente      String?
-  volumen_total   Float?
-  margen_promedio Float?
-  recency         BigInt?
-  frecuencia      BigInt?
-  ano             Decimal? @db.Decimal
-  mes             String?
-
-  @@ignore
-}
-
-model puntuaciones_clientes_vcs {
-  id                    Int      @id @default(autoincrement())
-  id_cliente            String?
-  nombre_empresa        String?
-  volumen_total         Float?
-  margen_promedio       Float?
-  recency               BigInt?
-  frecuencia            BigInt?
-  ano                   Decimal? @db.Decimal
-  mes                   String?
-  puntuacion_volumen    Int?
-  puntuacion_margen     Int?
-  puntuacion_recency    Int?
-  puntuacion_frecuencia Int?
-  ponderacion_vcs       Decimal? @db.Decimal(10, 2)
-  segmento_numerico     Int?
-  segmento_categorico   String?
-}
-
-model rangos {
+model rangos_vcs {
   id         Int     @id @default(autoincrement())
   nombre     String  @db.VarChar(255)
   min_valor  Decimal @db.Decimal(20, 2)
   max_valor  Decimal @db.Decimal(20, 2)
   puntuacion Int?
+}
+
+model segmentos_vcs {
+  id               Int     @id @default(autoincrement())
+  estrellas        Int
+  score_min        Decimal @db.Decimal(3, 1)
+  score_max        Decimal @db.Decimal(3, 1)
+  nombre_categoria String?
 }
