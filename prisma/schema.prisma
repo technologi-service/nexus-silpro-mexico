@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
+
 }
 
 datasource db {
@@ -8,24 +9,26 @@ datasource db {
 }
 
 model clientes_vcs {
-  id_base        BigInt   @id @default(autoincrement())
-  id_cliente     String
-  nombre_empresa String?
-  year_          Int
-  mes            Int
-  numero_periodo Int      @db.SmallInt
-  corte          DateTime @db.Date
-  recencia       Int
-  frequencia     Int
-  volumen        Decimal  @db.Decimal(20, 2)
-  media_margen   Decimal? @db.Decimal(10, 4)
-  r_score        Int?
-  f_score        Int?
-  v_score        Int?
-  m_score        Int?
-  score          Decimal? @db.Decimal(6, 2)
-  segmento       String?
-  calculado_en   DateTime @default(now()) @db.Timestamptz(6)
+  id_base            BigInt   @id @default(autoincrement())
+  id_cliente         String
+  nombre_empresa     String?
+  year_              Int
+  mes                Int
+  numero_periodo     Int      @db.SmallInt
+  corte              DateTime @db.Date
+  recencia           Int
+  frequencia         Int
+  volumen            Decimal  @db.Decimal(20, 2)
+  media_margen       Decimal? @db.Decimal(10, 4)
+  r_score            Int?
+  f_score            Int?
+  v_score            Int?
+  m_score            Int?
+  score              Decimal? @db.Decimal(6, 2)
+  segmento           String?
+  calculado_en       DateTime @default(now()) @db.Timestamptz(6)
+  segmento_numerico  Int?
+  secuencia_periodos Int?
 
   @@unique([id_cliente, year_, numero_periodo], map: "unique_cliente_periodo")
 }
@@ -52,7 +55,7 @@ model periodo_vcs {
 model pesos_vcs {
   id     Int     @id @default(autoincrement())
   nombre String? @db.VarChar(255)
-  peso   Float
+  peso   Decimal @db.Decimal(10, 2)
 }
 
 model rangos_vcs {
@@ -66,7 +69,84 @@ model rangos_vcs {
 model segmentos_vcs {
   id               Int     @id @default(autoincrement())
   estrellas        Int
-  score_min        Decimal @db.Decimal(3, 1)
-  score_max        Decimal @db.Decimal(3, 1)
+  score_min        Decimal @db.Decimal(3, 2)
+  score_max        Decimal @db.Decimal(3, 2)
   nombre_categoria String?
+}
+
+model categorias_cognitivas_vcs {
+  id                  Int    @id @default(autoincrement())
+  de                  Int
+  a                   Int
+  categoria_cognitiva String
+
+  @@index([de, a], map: "idx_categorias_rango")
+}
+
+model clientes_gigantes {
+  id                  BigInt   @id @default(autoincrement())
+  id_cliente          String   @db.VarChar(50)
+  id_venta            String   @db.VarChar(50)
+  nombre_razon_social String?  @db.VarChar(255)
+  fecha_de_compra     DateTime @db.Date
+  volumen             Decimal? @default(0) @db.Decimal(15, 2)
+  margen              Decimal? @default(0) @db.Decimal(15, 2)
+  sede                String?  @db.VarChar(100)
+}
+
+model data_set_kpi {
+  id                  BigInt    @id @default(autoincrement())
+  fecha_corte         DateTime  @db.Date
+  cliente             String?   @db.VarChar(50)
+  volumen             Decimal?  @db.Decimal(20, 2)
+  freq                Int?
+  margen              Decimal?  @db.Decimal(20, 2)
+  recency             Int?
+  segmento            String?
+  periodo             Int?
+  periodo_consecutivo Int?
+  created_at          DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@unique([fecha_corte, cliente], map: "unq_kpi_cliente_fecha_refactor")
+  @@index([cliente], map: "idx_kpi_cliente")
+  @@index([fecha_corte], map: "idx_kpi_fecha_corte")
+}
+
+model etiquetar_vcs_to_crm {
+  id_codigo_cliente   String    @id @db.VarChar(50)
+  id_crm              String?   @db.VarChar(100)
+  segmento_anterior   String?
+  segmento_actual     String?
+  categoria_cognitiva String?
+  updated_at          DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model resumen_anual_wide_2025 {
+  id            BigInt    @id @default(autoincrement())
+  cliente       String    @unique(map: "unq_resumen_cliente") @db.VarChar(50)
+  fecha_corte_1 DateTime? @db.Date
+  volumen_1     Decimal?  @db.Decimal(20, 2)
+  frecuencia_1  Int?
+  recencia_1    Int?
+  margen_1      Decimal?  @db.Decimal(20, 2)
+  segmento_1    String?
+  fecha_corte_2 DateTime? @db.Date
+  volumen_2     Decimal?  @db.Decimal(20, 2)
+  frecuencia_2  Int?
+  recencia_2    Int?
+  margen_2      Decimal?  @db.Decimal(20, 2)
+  segmento_2    String?
+  fecha_corte_3 DateTime? @db.Date
+  volumen_3     Decimal?  @db.Decimal(20, 2)
+  frecuencia_3  Int?
+  recencia_3    Int?
+  margen_3      Decimal?  @db.Decimal(20, 2)
+  segmento_3    String?
+  fecha_corte_4 DateTime? @db.Date
+  volumen_4     Decimal?  @db.Decimal(20, 2)
+  frecuencia_4  Int?
+  recencia_4    Int?
+  margen_4      Decimal?  @db.Decimal(20, 2)
+  segmento_4    String?
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
 }
