@@ -11,7 +11,7 @@ export const updateVariable = defineAction({
 
   handler: async ({ id, peso }) => {
     try {
-      const updated = await prisma.variable.update({
+      const updated = await prisma.pesos_vcs.update({
         where: { id },
         data: { peso },
       });

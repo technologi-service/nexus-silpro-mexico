@@ -8,7 +8,9 @@
     "build": "npm run prisma:generate && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "check": "astro check && tsc --noEmit",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.10",
@@ -28,6 +30,13 @@
     "tailwindcss": "^4.1.12"
   },
   "devDependencies": {
-    "prisma": "^6.19.0"
+    "@astrojs/check": "^0.9.6",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-astro": "^1.5.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "prisma": "^6.19.0",
+    "typescript": "^5.9.3"
   }
 }
